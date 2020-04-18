@@ -44,6 +44,7 @@ def cropFaces(image):
     """
     Crop faces detected from the image
     """
+
     face_cascade = loadClassifier()
     
     faces = face_cascade.detectMultiScale(image, 1.25, 6)
@@ -51,11 +52,14 @@ def cropFaces(image):
     # Print number of faces found
     print('Number of faces detected:', len(faces))
 
+    extracted_faces = []
+
     for face in faces:
         x, y, w, h = [ v for v in face ]
         cv2.rectangle(image, (x,y), (x+w, y+h), GRAY_CODE, CHANNELS)
-        showImage(image[y:y+h, x:x+w] )
-
+        extracted_faces.append(image[y:y+h, x:x+w] )
+    
+    return extracted_faces
  
 if __name__ == "__main__":
 
