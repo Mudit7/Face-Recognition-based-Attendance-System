@@ -1,4 +1,4 @@
-from student import Student
+from src.entities.student import Student
 class Subject:
     
     subjectCode=None

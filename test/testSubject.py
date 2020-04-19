@@ -1,5 +1,5 @@
 import unittest
-from subject import Subject
+from src.entities.subject import Subject
 
 class TestSubject(unittest.TestCase):
     

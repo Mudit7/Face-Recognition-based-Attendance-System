@@ -1,5 +1,5 @@
 import unittest
-from students import Student
+from src.entities.student import Student
 
 class TestStudent(unittest.TestCase):
     

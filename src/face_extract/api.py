@@ -3,12 +3,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from .config import *
-
+import os
 def loadClassifier():
     """ 
     Load Pre-Trained/Trained Face Dectector
     """
-    return cv2.CascadeClassifier(CASCADE_CLASSIFIER)
+    #for testing use this, otherwise prefer abs path
+    return cv2.CascadeClassifier('../src/face_extract/models/haarcascade_frontalface_default.xml')
 
 def rgbToGrayscale(image):
     """
@@ -17,7 +18,7 @@ def rgbToGrayscale(image):
     gray_image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
     return gray_image
 
-def readIamge(image_path):
+def readImage(image_path):
     """
     Read Image
     """
@@ -46,7 +47,6 @@ def cropFaces(image):
     """
 
     face_cascade = loadClassifier()
-    
     faces = face_cascade.detectMultiScale(image, 1.25, 6)
 
     # Print number of faces found
@@ -65,7 +65,7 @@ if __name__ == "__main__":
 
     # SAMPLE USAGE CODE FOR HELP
 
-    image = readIamge('test_images/test-2.jpg')
+    image = readImage('test_images/test-2.jpg')
 
     gray_image = rgbToGrayscale(image)
 

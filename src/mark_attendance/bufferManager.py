@@ -1,4 +1,4 @@
-from subject import Subject
+from src.entities.subject import Subject
 class BufferManager:
 
     def __init__(self,path):
