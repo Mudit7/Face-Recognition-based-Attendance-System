@@ -1,103 +1,89 @@
 from __future__ import print_function
 import os
-import sys
-import re
 import glob
 import json
+
 from lib.fast_rcnn.config import cfg, cfg_from_file
 
-def arr_to_str(arr):
+from details_extract import DetailsExtracter
+
+def writeToJson(path, data):
+	""" 
+	Write JSON file
+	"""
+	with open(path, 'w', encoding='utf-8') as outfile:
+		json_data = json.dumps(data, indent=4, sort_keys=True, separators=(',', ': '), ensure_ascii=False)
+		outfile.write(str(json_data))
+
+def arr2str(arr):
 	string = ''
 	for element in arr:
 		string = string + ' ' + element
 	return string.strip()
 
-cur_dir = os.getcwd()
-im_names = glob.glob(os.path.join(cfg.DATA_DIR, 'demo', '*.png')) + glob.glob(os.path.join(cfg.DATA_DIR, 'demo', '*.jpg'))
-for im_name in im_names:
-	base_name = im_name.split('/')[-1]
-	#print (base_name)
-	with open( cur_dir +'/ocr/results/' + 'ocr_res_{}.txt'.format(base_name.split('.')[0]), 'r') as f:
-		boxes = f.read()
-		boxes = boxes.split('\n')
-		boxes = boxes[:-1]
+def getContent(boxes):
 
-		sort_boxes = []
-		#### Making dictonary for sorting #####
-		for box in boxes:
-			co_ord = box.split(',')
-			if len(co_ord) >= 5:
-				sort_boxes.append(co_ord)
+	path = cur_dir +'/Id_result/text/' + 'ocr_res_{}.txt'.format(base_name.split('.')[0])
 
-		sort_boxes.sort(key=lambda x: (int(x[3]),int(x[0])))
-		
-	with open( cur_dir +'/Id_result/text/' + 'ocr_res_{}.txt'.format(base_name.split('.')[0]), 'w') as f:
-		prev_y = 0
-		content = ""
-		for box in sort_boxes:
-			text_arr = box[4:]
-			text = arr_to_str(text_arr)
-			if prev_y != box[3]:
-				content += '\n' + text
-			else:
-				content += '    ' + text 
-			prev_y = box[3]
-		f.write(content)
+	prev_y = 0
 
-	#print (content)
-############################################################################################################
-###################################### Section 4: Extract relevant information #############################
-############################################################################################################
-	text = content
-	# Initializing data variable
-	name = None
-	email =None
-	mob = None
-	address = None 
-	dob = None 
+	content = ""
+	for box in boxes:
+		text = arr2str(box[4:])
+		if prev_y != box[3]:
+			content += '\n' + text
+		else:
+			content += '    ' + text 
+		prev_y = box[3]
 
-	nameline = []
-	dobline = []
-	text0 = []
-	text1 = []
-	text2 = []
+	return content
 
-	# Searching for Detail
-	lines = text.split('\n')
-	for lin in lines:
-	    s = lin.strip()
-	    s = lin.replace('\n','')
-	    s = s.rstrip()
-	    s = s.lstrip()
-	    text1.append(s)
 
-	text1 = list(filter(None, text1))
-	#print(text1)
+if __name__ == "__main__":
 
-	#### Regex for extracting all email and Mobile or Phone number on id card#####
-	emails = []
-	phones = [] 
-	dates = []
-	c_name = []
-	address = []
-	name = []
-	flag,count = 0,0
-	for line in text1:
-		temp = line.lower()
-		wordss = temp.split(' ')
+	details_extractor = DetailsExtracter()
 
-		words = []
-		for word in wordss:
-			word = word.replace(';',':')
-			words.append(word)
-		#print(words)
+	cur_dir = os.getcwd()
 
-## NEXT STEPS EXTRACTING IMFORMATON ARE WRITTEN PLESE COMPLETE ##
+	images = []
 
-# Name and Cleaning #
-## Name of Institute #
-# Email Date Phone No. #
-# Date in form of xx(./-)mm(./-)yyyy #
-## If address is given in proper format (3lines)#
-# Write JSON file
+	# Get images Only
+	EXTENSIONS = ['png', 'jpg']
+	for extension in  EXTENSIONS:
+		path = os.path.join(cfg.DATA_DIR, 'demo', '*.{}'.format(extension))
+		images += glob.glob(path)
+ 
 
+	for image in images:
+		base_name = image.split('/')[-1]
+
+		path = cur_dir +'/ocr/results/' + 'ocr_res_{}.txt'.format(base_name.split('.')[0])
+		with open( path, 'r') as f:
+			boxes = f.read()
+
+		# Remove Boxes without keys
+		boxes = boxes.split('\n')[:-1]
+		boxes = [ box.split(',') for box in boxes if len(box.split(','))>4 ]
+		boxes.sort( key = lambda x : ( int(x[3]), int(x[0]) ) )
+
+		content = getContent(boxes)
+
+		with open( path, 'w') as f:
+			f.write(content)
+
+		# Search Details
+		text = []
+		lines = content.split('\n')
+		for line in lines:
+			s = line.replace('\n','')
+			s = s.strip()
+			text.append(s)
+		text = list(filter(None, text))
+
+		# Extract Details
+		details_extractor.reset()
+		data = details_extractor.extractDetails(text)
+
+		# Write Output as JSON
+		path = cur_dir + '/Id_result/json/' +'res_{}.json'.format(base_name.split('.')[0])
+		writeToJson(data,path)
