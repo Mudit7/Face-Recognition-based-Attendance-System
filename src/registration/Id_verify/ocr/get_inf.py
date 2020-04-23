@@ -91,5 +91,13 @@ for im_name in im_names:
 			word = word.replace(';',':')
 			words.append(word)
 		#print(words)
-		
+
+## NEXT STEPS EXTRACTING IMFORMATON ARE WRITTEN PLESE COMPLETE ##
+
+# Name and Cleaning #
+## Name of Institute #
+# Email Date Phone No. #
+# Date in form of xx(./-)mm(./-)yyyy #
+## If address is given in proper format (3lines)#
+# Write JSON file
 

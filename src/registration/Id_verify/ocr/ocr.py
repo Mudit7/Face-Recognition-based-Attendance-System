@@ -14,6 +14,18 @@ import pytesseract
 import argparse
 import ftfy
 
+###### Section 1: Initiate the command line interface ###
+
+## Section 2: Load the image -- Preprocess it -- Write it to disk
+
+def ocr_extract_text(image):
+	pass
+
+def resize_im(im, scale, max_scale=None):
+	pass
+def crop(image, coords, saved_location,image_name,image_no):
+	pass
+
 
 ############ Getting the data from results, obtained from Ctcn################
 im_names = glob.glob(os.path.join(cfg.DATA_DIR, 'demo', '*.png')) + glob.glob(os.path.join(cfg.DATA_DIR, 'demo', '*.jpg'))
