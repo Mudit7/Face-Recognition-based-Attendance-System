@@ -2,6 +2,7 @@ from __future__ import print_function
 import re
 
 class DetailsExtracter:
+	
 	def __init__(self):
 
 		self.name = []

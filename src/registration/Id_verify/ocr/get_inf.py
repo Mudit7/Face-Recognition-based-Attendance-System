@@ -40,7 +40,8 @@ def getContent(boxes):
 
 
 if __name__ == "__main__":
-
+	
+	# Initialise Details Extractor Class
 	details_extractor = DetailsExtracter()
 
 	cur_dir = os.getcwd()
