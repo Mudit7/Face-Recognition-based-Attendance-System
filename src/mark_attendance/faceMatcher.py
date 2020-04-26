@@ -4,8 +4,10 @@ import numpy as np
 from keras_facenet import FaceNet
 from src.face_extract import api as Extractor
 from src.mark_attendance.attendanceMarker import AttendanceMarker
-from src.mark_attendance.bufferManager import BufferManager
+from src.mark_attendance.bufferManeger import BufferManeger
 from src.entities.student import Student
+from src.mark_attendance.buffer_config import *
+from src.mark_attendance.bufferArg import BufferArg
 import cv2
 
 
@@ -18,9 +20,10 @@ class FaceMatcher:
         self.encoded_extracted_faces = []
         self.present_students = []
         self.student_images = []
-        subject_code = grp.getSubjectCode()
-        bm = BufferManager('path')
-        cur_subject = bm.getSubject(subject_code)
+        self.subject_code = grp.getSubjectCode()
+        bmArg = BufferArg(BUFFER_DIR,EXPIRE_DAYS,NO_OF_SUB)
+        bm = BufferManeger(bmArg)
+        cur_subject = bm.getSubject(self.subject_code)
         self.student_list = []
 
         group_image = grp.getGroupImage()
@@ -53,7 +56,7 @@ class FaceMatcher:
             self.present_students.append(student)
 
         am = AttendanceMarker()
-        success = am.mark_present(self.present_students)
+        success = am.mark_present(self.present_students,self.subject_code)
         return success
 
     def get_best_match_student(self, extractedVec):
