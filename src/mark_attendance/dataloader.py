@@ -1,15 +1,15 @@
-from students import Student
-from subject import Subject
+from src.entities.student import Student
+from src.entities.subject import Subject
 import cv2
 #this is temporary dataloader just created for testing.
 class DataLoader:
-    mysub=None
-    s_babita=None
-    s_sheldon=None
-    s_ram=None
+    # mysub=None
+    # s_babita=None
+    # s_sheldon=None
+    # s_ram=None
     def __init__(self):
         #creating sudents.
-        loc_dir='/home/nabhiraj/Documents/sem_2/se/headace/Face-Recognition-based-Attendance-System/students_images/'
+        loc_dir='/Users/mudit/Desktop/SE_Proj/Face-Recognition-based-Attendance-System/students_images/'
         self.s_babita=Student(1,
                               'babita',
                               cv2.imread(loc_dir+'babita.jpg'))
@@ -31,12 +31,13 @@ class DataLoader:
         self.s_peter=Student(6,
                              'peter',
                              cv2.imread(loc_dir+'peter.jpg'))
-        
-        l=[self.s_babita,self.s_sheldon,self.s_ram]
-        self.mysub=[Subject(101,'algorithms',l),Subject(102,'toc',l),Subject(103,'os',l),Subject(104,'DMA',l)]
-        
+        l1=[self.s_babita,self.s_sheldon,self.s_ram]
+        l2=[self.s_babita,self.s_sheldon,self.s_ram,self.s_gita,self.s_syam]
+        self.mysub=[Subject(101,'algorithms',l2),Subject(102,'toc',l1),Subject(103,'os',l1),Subject(104,'DMA',l2)]
+
     def getSubject(self,subCode):
+        # print("subject code",subCode)
         for i in self.mysub:
             if i.getSubjectCode()==subCode:
+                print("subject name",i.getSubjectName())
                 return i
-        

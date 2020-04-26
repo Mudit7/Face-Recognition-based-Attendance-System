@@ -24,7 +24,7 @@ class FaceMatcher:
         bmArg = BufferArg(BUFFER_DIR,EXPIRE_DAYS,NO_OF_SUB)
         bm = BufferManeger(bmArg)
         cur_subject = bm.getSubject(self.subject_code)
-        self.student_list = []
+        self.student_list = cur_subject.getStudentList()
 
         group_image = grp.getGroupImage()
         extracted_faces = Extractor.cropFaces(group_image)
@@ -33,12 +33,12 @@ class FaceMatcher:
 
 
         # for testing************
-
-        self.student_list.append(Student(1,"syam",cv2.imread('../students_images/syam.jpg')))
-        self.student_list.append(Student(2,"sheldon",cv2.imread('../students_images/sheldon.jpg')))
-        self.student_list.append(Student(3,"babita",cv2.imread('../students_images/babita.jpg')))
-        self.student_list.append(Student(4,"gita",cv2.imread('../students_images/gita.jpg')))
-        self.student_list.append(Student(5,"ram",cv2.imread('../students_images/ram.jpg')))
+        #
+        # self.student_list.append(Student(1,"syam",cv2.imread('../students_images/syam.jpg')))
+        # self.student_list.append(Student(2,"sheldon",cv2.imread('../students_images/sheldon.jpg')))
+        # self.student_list.append(Student(3,"babita",cv2.imread('../students_images/babita.jpg')))
+        # self.student_list.append(Student(4,"gita",cv2.imread('../students_images/gita.jpg')))
+        # self.student_list.append(Student(5,"ram",cv2.imread('../students_images/ram.jpg')))
 
         #*****************************
         for student in self.student_list:

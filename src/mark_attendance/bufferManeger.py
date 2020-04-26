@@ -1,6 +1,6 @@
 from src.entities.subject import Subject
-from dataloader import DataLoader
-from bufferArg import BufferArg
+from src.mark_attendance.dataloader import DataLoader
+from src.mark_attendance.bufferArg import BufferArg
 import os
 import pickle
 import datetime
@@ -101,6 +101,7 @@ class BufferManeger:
         return tempSub
     
     def getNewSubject(self,subCode):
+        print("subject code", subCode)
         tempSub=self.subjectLoader.getSubject(subCode)
         return tempSub
     

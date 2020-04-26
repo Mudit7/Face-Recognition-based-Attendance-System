@@ -9,7 +9,8 @@ def loadClassifier():
     Load Pre-Trained/Trained Face Dectector
     """
     #for testing use this, otherwise prefer abs path
-    return cv2.CascadeClassifier('../src/face_extract/models/haarcascade_frontalface_default.xml')
+    CASCADE_CLASSIFIER
+    return cv2.CascadeClassifier(CASCADE_CLASSIFIER)
 
 def rgbToGrayscale(image):
     """
