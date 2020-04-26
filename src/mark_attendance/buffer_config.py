@@ -1,3 +1,4 @@
-BUFFER_DIR = '/Users/mudit/Desktop/SE_Proj/Face-Recognition-based-Attendance-System/BufferManagerCache'
+from root_config import ROOT_DIR
+BUFFER_DIR = ROOT_DIR+'/BufferManagerCache'
 EXPIRE_DAYS = 2
 NO_OF_SUB = 3

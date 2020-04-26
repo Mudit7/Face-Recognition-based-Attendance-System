@@ -1,6 +1,7 @@
 from src.entities.student import Student
 from src.entities.subject import Subject
 import cv2
+from root_config import ROOT_DIR
 #this is temporary dataloader just created for testing.
 class DataLoader:
     # mysub=None
@@ -9,7 +10,7 @@ class DataLoader:
     # s_ram=None
     def __init__(self):
         #creating sudents.
-        loc_dir='/Users/mudit/Desktop/SE_Proj/Face-Recognition-based-Attendance-System/students_images/'
+        loc_dir=ROOT_DIR+'/students_images/'
         self.s_babita=Student(1,
                               'babita',
                               cv2.imread(loc_dir+'babita.jpg'))
