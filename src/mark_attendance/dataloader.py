@@ -37,8 +37,6 @@ class DataLoader:
         self.mysub=[Subject(101,'algorithms',l2),Subject(102,'toc',l1),Subject(103,'os',l1),Subject(104,'DMA',l2)]
 
     def getSubject(self,subCode):
-        # print("subject code",subCode)
         for i in self.mysub:
             if i.getSubjectCode()==subCode:
-                print("subject name",i.getSubjectName())
                 return i

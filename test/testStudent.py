@@ -10,15 +10,12 @@ class TestStudent(unittest.TestCase):
         self.testobj=Student(self.code,self.name,self.img)
         
     def test_getName(self):
-        print('student name')
         self.assertEqual(self.testobj.getName(),self.name)
     
     def test_getRollNo(self):
-        print('studne roll')
         self.assertEqual(self.testobj.getRollNo(),self.code)
     
     def test_getImage(self):
-        print('studnet image')
         self.assertEqual(self.testobj.getImage(),self.img)
         
 if __name__ == '__main__':

@@ -101,7 +101,6 @@ class BufferManeger:
         return tempSub
     
     def getNewSubject(self,subCode):
-        print("subject code", subCode)
         tempSub=self.subjectLoader.getSubject(subCode)
         return tempSub
     
