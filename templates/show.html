@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Displaying Images</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
+<script>var rn = {{id}}</script>
+<script>
+
+    $(function() {
+   var people = [];
+   $.getJSON('/static/json/'+rn+'.json', function(data) {
+    console.log(data)
+    var tblRow = "<tr>" + "<td>" + data.college + "</td>" +
+           "<td>" + data.name + "</td>" + "<td>" + data.roll_no + "</td>" + "<td>" + data.emails + "</td>" + "<td>" + data.branch + "</td>" + "<td>" + data.mobile + "</td>"+ "<td>" + data.valid + "</td>"+ "</tr>"
+    $(tblRow).appendTo("#userdata tbody");
+   });
+
+});
+</script>
+</head>
+<body>
+<h1>
+Details extracted from uploaded ID card
+</h1>
+<p>
+  Uploaded Image <br>
+  <img src= "/static/cards/{{id}}.jpg" 
+       width="400" 
+       height="235" 
+       alt="Studetn ID card Image"> 
+</p><br>
+<p>
+Face Extracted From ID card<br>
+<img 
+src="/static/faces/{{id}}.jpg" 
+width="200" 
+height="235" alt="Studetn face image" > 
+</p><br>
+<div class="wrapper">
+<div class="profile">
+  Details Extracted From ID card<br>
+   <table id= "userdata" border="2">
+  <thead>
+            <th>College Name</th>
+            <th>Name</th>
+            <th>Roll Number</th>
+            <th>Email Address</th>
+            <th>Branch</th>
+            <th>Mobile Number</th>
+            <th>Validity</th>
+        </thead>
+      <tbody>
+
+       </tbody>
+   </table>
+
+</div>
+</div>
+<center><br><br>
+
+<button type="button" onclick="window.location.href='{{ url_for( 'updatedatabase' , id = id ) }}';">Confirm Details</button>
+</body>
+</html>
