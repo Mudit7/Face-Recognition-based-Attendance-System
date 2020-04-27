@@ -43,7 +43,7 @@ def update_table():
 		date = getDate()
 
 		for student in present_student_list:
-			sql="UPDATE student5 SET "+date+"='present' where subject_code = "+str(subject_code)+" and student_id="+str(student[2])
+			sql="UPDATE student5 SET "+date+"='present' where subject_code = "+str(subject_code)+" and student_id="+str(student)
 			cursor.execute(sql)
 			db_connection.commit()
 
