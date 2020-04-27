@@ -3,6 +3,10 @@ from sys import argv
 from flask import Flask, request, redirect, url_for, send_from_directory
 from werkzeug import secure_filename
 
+from src.entities.group import Group
+from src.mark_attendance.faceMatcher import FaceMatcher
+import cv2
+
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
@@ -16,6 +20,11 @@ def allowed_file(filename):
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
+
+        data = request.request.get_json()
+        
+        subject_code = data['subject_code']
+        subject_name = data['subject_code']
         
         # If post request has file in it
         if 'file' in request.files:
@@ -23,14 +32,14 @@ def upload_file():
             if file and allowed_file(file.filename):
                 print ('**found file', file.filename)
                 filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                return url_for('uploaded_file',
-                                        filename=filename)
+                media_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                file.save(media_path)
 
-        # If post request contain json in it
-        if request.json:
-            data = request.json
-            print ("{}".format(data))
+        img=cv2.imread(media_path, cv2.COLOR_BGR2RGB)
+        grp=Group(subject_code, subject_name, img)
+        Fmatcher=FaceMatcher(grp)
+        Fmatcher.process()
+
 
     return '''
     <!doctype html>
