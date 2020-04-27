@@ -3,13 +3,13 @@
 import numpy as np
 from keras_facenet import FaceNet
 from src.face_extract import api as Extractor
-from src.mark_attendance.attendanceMarker import AttendanceMarker
+from src.mark_attendance.attendanceMarkerInterface import AttendanceMarkerInterface
 from src.mark_attendance.bufferManeger import BufferManeger
 from src.entities.student import Student
 from src.mark_attendance.buffer_config import *
 from src.mark_attendance.bufferArg import BufferArg
 import cv2
-
+threshold = 0.15
 
 class FaceMatcher:
 
@@ -56,9 +56,10 @@ class FaceMatcher:
     def process(self):
         for encodedVec in self.encoded_extracted_faces:
             student = self.get_best_match_student(encodedVec)
-            self.present_students.append(student)
+            if student is not None:
+                self.present_students.append(student)
 
-        am = AttendanceMarker()
+        am = AttendanceMarkerInterface()
         success = am.mark_present(self.present_students,self.subject_code)
         return success
 
@@ -68,4 +69,8 @@ class FaceMatcher:
             dist = np.linalg.norm(studentVec - extractedVec)
             diff_vec.append(dist)
         min_index = diff_vec.index(min(diff_vec))
-        return self.student_list[min_index]
+        print(diff_vec[min_index])
+        if diff_vec[min_index] > threshold:    #if a good match
+            return self.student_list[min_index]
+        else:
+            return None

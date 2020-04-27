@@ -1,12 +1,9 @@
 import requests
 import json
 
-from config import *
+from src.mark_attendance.config import *
 
-class AttendanceMarker:
-
-    def __init__(self):
-        self.roll_no=[]
+class AttendanceMarkerInterface:
 
     def sendAttendance(self, roll_no, subject_code):
         data = {
@@ -22,5 +19,5 @@ class AttendanceMarker:
         roll_no=[]
         for val in students:
             roll_no.append(val.getRollNo())
-        self.roll_no = roll_no
         self.sendAttendance(roll_no, subject_code)
+        return 1
