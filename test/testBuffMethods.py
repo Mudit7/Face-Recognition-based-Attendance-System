@@ -5,6 +5,8 @@ from src.mark_attendance.bufferArg import BufferArg
 from src.mark_attendance.bufferManeger import BufferManeger
 from src.entities.student import Student
 from root_config import ROOT_DIR
+
+
 class TestBuffMethod(unittest.TestCase):
     
     def setUp(self):

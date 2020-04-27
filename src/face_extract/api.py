@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 from .config import *
 import os
@@ -55,7 +56,7 @@ def cropFaces(image):
 
     extracted_faces = []
 
-    for face in faces:
+    for face in tqdm(faces):
         x, y, w, h = [ v for v in face ]
         cv2.rectangle(image, (x,y), (x+w, y+h), GRAY_CODE, CHANNELS)
         extracted_faces.append(image[y:y+h, x:x+w] )
