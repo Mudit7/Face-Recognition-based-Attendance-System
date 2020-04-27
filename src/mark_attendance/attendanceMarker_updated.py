@@ -1,19 +1,26 @@
+import requests
+import json
+
+from config import *
 
 class AttendanceMarker:
+
     def __init__(self):
         self.roll_no=[]
-        pass
-<<<<<<< HEAD
-    def mark_present(self, students,subject_code):
-        for val in students:
-            self.roll_no.append(val.getRollNo())    
-        prazwal_method(roll_no,code)
-        
-    
-=======
 
-"""    def mark_present(self, students,subcode):
-        for student in students:
-            print(student.getName())
-        return 1"""
->>>>>>> fe93987214de2249d1546659e616bc23436cf872
+    def sendAttendance(self, roll_no, subject_code):
+        data = {
+            'subject_code' : subject_code,
+            'students' : roll_no
+        }
+        try:
+            requests.post(url = DESTINATION_ADDRESS, data = json.dumps(data))
+        except Exception as e:
+            print("Error : {}".format(e))
+
+    def mark_present(self, students,subject_code):
+        roll_no=[]
+        for val in students:
+            roll_no.append(val.getRollNo())
+        self.roll_no = roll_no
+        self.sendAttendance(roll_no, subject_code)
