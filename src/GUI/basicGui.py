@@ -14,9 +14,10 @@ def selectFile():
     path_label_var.set(top.filename)
 
 def startProcess():
+    destination_address = '127.0.0.1/5000'
     file_path=top.filename
     sub_code=sub_code_entry.get()
-    upload_media.send_media(sub_code, file_path)
+    upload_media.send_media(destination_address, sub_code, file_path)
 
 top=tkinter.Tk()
 B=tkinter.Button(top,text='start Process',command=startProcess)
