@@ -1,5 +1,5 @@
 import unittest
-from bufferArg import BufferArg
+from src.mark_attendance.bufferArg import BufferArg
 class TestBufferArg(unittest.TestCase):
     
     def setUp(self):

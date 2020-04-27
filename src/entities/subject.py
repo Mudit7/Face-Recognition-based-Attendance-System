@@ -3,7 +3,7 @@ class Subject:
     
     subjectCode=None
     subjectName=None
-    studentList=[Student(None,None,None),Student(None,None,None)]
+    studentList=[]
     
     def __init__(self,code,name,slist):
         self.subjectCode=code

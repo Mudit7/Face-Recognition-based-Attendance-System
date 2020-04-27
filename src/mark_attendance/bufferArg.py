@@ -3,6 +3,11 @@ class BufferArg:
     expDays=None
     numOfSub=None
     
+    #def __init__(self,path,expDays,numOfSub):
+    #    self.path = path
+    #    self.expDays = expDays
+    #    self.numOfSub = numOfSub
+
     def setPath(self,path):
         self.path=path
         

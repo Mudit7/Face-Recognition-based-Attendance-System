@@ -55,6 +55,8 @@ for im_name in im_names:
 	mob = None
 	address = None 
 	dob = None 
+	branch = None
+	Enroll = None
 
 	nameline = []
 	dobline = []
@@ -64,6 +66,7 @@ for im_name in im_names:
 
 	# Searching for Detail
 	lines = text.split('\n')
+
 	for lin in lines:
 	    s = lin.strip()
 	    s = lin.replace('\n','')
@@ -72,7 +75,7 @@ for im_name in im_names:
 	    text1.append(s)
 
 	text1 = list(filter(None, text1))
-	#print(text1)
+	# print(text1)
 
 	#### Regex for extracting all email and Mobile or Phone number on id card#####
 	emails = []
@@ -81,7 +84,10 @@ for im_name in im_names:
 	c_name = []
 	address = []
 	name = []
+	branch = []
 	flag,count = 0,0
+	name.append(text1[3])
+	branch.append(text1[4])
 	for line in text1:
 		temp = line.lower()
 		wordss = temp.split(' ')
@@ -90,14 +96,74 @@ for im_name in im_names:
 		for word in wordss:
 			word = word.replace(';',':')
 			words.append(word)
-		#print(words)
+		# print(words)
+		
 
-## NEXT STEPS EXTRACTING IMFORMATON ARE WRITTEN PLESE COMPLETE ##
 
-# Name and Cleaning #
-## Name of Institute #
-# Email Date Phone No. #
-# Date in form of xx(./-)mm(./-)yyyy #
-## If address is given in proper format (3lines)#
-# Write JSON file
+#(unique)####### Name of Institute ########### Please add if remaining
+		syn = ['college', 'institute', 'school', 'vidyalaya' , 'university', 'academy']
+		for word in syn:
+			if word in words:
+				temp1 = line.rstrip()
+				temp1 = temp1.lstrip()
+				temp1 = temp1.replace("8", "B")
+				temp1 = temp1.replace("0", "D")
+				temp1 = temp1.replace("6", "G")
+				temp1 = temp1.replace("1", "I")
+				temp1 = re.sub('[^a-zA-Z] +', ' ',temp1)
+				c_name.append(temp1)
 
+#(multiple)	#################### Email Date Phone No. #################
+		for word in words:
+			
+			## email for each line
+			elst = re.findall(r'[\w\.-]+@[\w\.-]+',word)
+			emails = list(set(emails + elst))
+
+
+			## phone no. for each line
+			plst = re.search(r'((\+*)((0[ -]+)*|(91 )*)(\d{12}|\d{10})| )|\d{5}([- ]*)\d{6}',word)
+			if plst is not None:
+				phn = word
+				phn = phn.rstrip()
+				phn = phn.lstrip()
+				phn = phn.replace(" ", "")
+				phones.append(phn)
+
+
+		
+		############################################################
+
+		add = ['enroll']
+		for word in add:
+			if word in words:
+				address.append(re.findall(r'\d+', line)[0])
+
+		add = ['valid']
+		for word in add:
+			if word in words:
+				dates.append(arr_to_str(words[3:]))
+		################# 3 lines of proper format address #############
+	
+
+	######## Making Tuple of Data ##################
+	#print ("These are the quantities can extract for every card")
+	data = {}
+	data['name'] = arr_to_str(name) 
+	data['branch'] = arr_to_str(branch) 
+	data['college'] = arr_to_str(c_name)
+	data['valid'] = arr_to_str(dates)
+	data['emails'] = arr_to_str(emails)
+	data['mobile'] =  arr_to_str(phones)
+	data['roll_no'] = arr_to_str(address)
+	#print (data)
+	# Writing data into JSON
+	try:
+		to_unicode = unicode
+	except NameError:
+		to_unicode = str
+
+	# Write JSON file
+	with open(cur_dir + '/Id_result/json/' +'res_{}.json'.format(base_name.split('.')[0]), 'w', encoding='utf-8') as outfile:
+		str_ = json.dumps(data, indent=4, sort_keys=True, separators=(',', ': '), ensure_ascii=False)
+		outfile.write(to_unicode(str_))

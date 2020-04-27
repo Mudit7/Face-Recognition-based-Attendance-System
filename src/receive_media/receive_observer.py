@@ -1,4 +1,5 @@
-import face_extract
+import requests
+import json
 
 class ReceiveObserver(object):
     """
@@ -9,12 +10,16 @@ class ReceiveObserver(object):
     def __init__(self, trigger):
         self.trigger = trigger
         self.trigger.bind_to(self.extract_faces)
+    
+    def sendForExtraction(self, subject_code, group_media):
+        DESTINATION_ADDRESS = '127.0.0.1:8882'
 
-    def extractFacesMedia(self, subject_code, group_media):
         image = group_media
 
-        gray_image = face_extract.rgbToGrayscale(image)
+        data = {
+            'subject_code' : subject_code
+        }
 
-        faces = face_extract.cropFaces(gray_image)
-
-        return faces
+        files = {'media': image}
+        
+        requests.post(url = DESTINATION_ADDRESS, files=files, data = json.dumps(data))
