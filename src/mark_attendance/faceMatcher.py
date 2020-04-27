@@ -8,6 +8,7 @@ from src.mark_attendance.bufferManeger import BufferManeger
 from src.entities.student import Student
 from src.mark_attendance.buffer_config import *
 from src.mark_attendance.bufferArg import BufferArg
+from root_config import ROOT_DIR
 import cv2
 threshold = 0.15
 
@@ -31,6 +32,8 @@ class FaceMatcher:
 
         group_image = grp.getGroupImage()
         extracted_faces = Extractor.cropFaces(group_image)
+        self.saveImages(extracted_faces,EXTRACTED_IMAGES_SAVE_FOLDER)
+
         # *****************************
         # Encode using the FACENET
 
@@ -74,3 +77,9 @@ class FaceMatcher:
             return self.student_list[min_index]
         else:
             return None
+
+    def saveImages(self,extracted_faces,loc):
+        i = 0
+        for extracted_face in extracted_faces:
+            i += 1
+            cv2.imwrite(loc + "/img" + str(i) + '.jpg', extracted_face)
