@@ -21,7 +21,10 @@ class FaceMatcher:
         self.present_students = []
         self.student_images = []
         self.subject_code = grp.getSubjectCode()
-        bmArg = BufferArg(BUFFER_DIR,EXPIRE_DAYS,NO_OF_SUB)
+        bmArg = BufferArg()
+        bmArg.setPath(BUFFER_DIR)
+        bmArg.setExpirationTime(EXPIRE_DAYS)
+        bmArg.setNumOfSub(NO_OF_SUB)
         bm = BufferManeger(bmArg)
         cur_subject = bm.getSubject(self.subject_code)
         self.student_list = cur_subject.getStudentList()
