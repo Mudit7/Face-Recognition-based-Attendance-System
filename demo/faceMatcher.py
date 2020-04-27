@@ -10,13 +10,12 @@ from demo.buffer_config import *
 from demo.bufferArg import BufferArg
 import cv2
 from tqdm import tqdm
-
+threshold = 0.15
 
 class FaceMatcher:
 
 
     def __init__(self, grp):
-        print('starting face matcher construction')
         self.student_list = []
         self.encoded_student_faces = []
         self.encoded_extracted_faces = []
@@ -54,17 +53,15 @@ class FaceMatcher:
         extracted_faces = np.array(extracted_faces)
         self.encoded_student_faces = embedder.embeddings(self.student_images)
         self.encoded_extracted_faces = embedder.embeddings(extracted_faces)
-        print('face matcher object constructed')
 
     def process(self):
-        print('starting face matcher process')
-        for encodedVec in tqdm(self.encoded_extracted_faces):
+        for encodedVec in self.encoded_extracted_faces:
             student = self.get_best_match_student(encodedVec)
-            self.present_students.append(student)
+            if student is not None:
+                self.present_students.append(student)
 
         am = AttendanceMarkerScp()
         success = am.mark_present(self.present_students,self.subject_code)
-        print('attendance marked successfully')
         return success
 
     def get_best_match_student(self, extractedVec):
@@ -73,4 +70,8 @@ class FaceMatcher:
             dist = np.linalg.norm(studentVec - extractedVec)
             diff_vec.append(dist)
         min_index = diff_vec.index(min(diff_vec))
-        return self.student_list[min_index]
+        print(diff_vec[min_index])
+        if diff_vec[min_index] > threshold:    #if a good match
+            return self.student_list[min_index]
+        else:
+            return None
