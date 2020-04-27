@@ -3,7 +3,7 @@
 import numpy as np
 from keras_facenet import FaceNet
 from src.face_extract import api as Extractor
-from src.mark_attendance.attendanceMarkerInterface import AttendanceMarkerInterface
+from src.mark_attendance.attendanceMarker import AttendanceMarker
 from src.mark_attendance.bufferManeger import BufferManeger
 from src.entities.student import Student
 from src.mark_attendance.buffer_config import *
@@ -59,7 +59,7 @@ class FaceMatcher:
             if student is not None:
                 self.present_students.append(student)
 
-        am = AttendanceMarkerInterface()
+        am = AttendanceMarker()
         success = am.mark_present(self.present_students,self.subject_code)
         return success
 

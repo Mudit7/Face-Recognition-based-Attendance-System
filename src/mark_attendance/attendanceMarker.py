@@ -3,7 +3,7 @@ import json
 
 from src.mark_attendance.config import *
 
-class AttendanceMarkerInterface:
+class AttendanceMarker:
 
     def sendAttendance(self, roll_no, subject_code):
         data = {
