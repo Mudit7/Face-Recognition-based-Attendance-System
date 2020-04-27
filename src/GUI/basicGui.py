@@ -6,14 +6,18 @@ from tkinter import LEFT
 from tkinter import Entry
 from tkinter import RIGHT
 from tkinter import filedialog
+
+import src.upload_media as upload_media
+
 def selectFile():
     top.filename =  filedialog.askopenfilename(initialdir = ".",title = "Select file",filetypes = (("jpeg files","*.jpg"),("all files","*.*")))
     path_label_var.set(top.filename)
+
 def startProcess():
     file_path=top.filename
     sub_code=sub_code_entry.get()
-    #code to send the data.
-    pass
+    upload_media.send_media(sub_code, file_path)
+
 top=tkinter.Tk()
 B=tkinter.Button(top,text='start Process',command=startProcess)
 sub_code_var=StringVar()
