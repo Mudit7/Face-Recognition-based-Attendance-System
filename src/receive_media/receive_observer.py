@@ -12,7 +12,7 @@ class ReceiveObserver(object):
         self.trigger.bind_to(self.extract_faces)
     
     def sendForExtraction(self, subject_code, group_media):
-        DESTINATION_ADDRESS = '127.0.0.1:8882'
+        DESTINATION_ADDRESS = '127.0.0.1:8080'
 
         image = group_media
 
