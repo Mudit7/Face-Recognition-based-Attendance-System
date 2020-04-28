@@ -30,28 +30,14 @@ class FaceMatcher:
         bmArg.setNumOfSub(NO_OF_SUB)
         bm = BufferManeger(bmArg)
         cur_subject = bm.getSubject(self.subject_code)
-        self.student_list = cur_subject.getStudentList()
 
+        self.student_list = cur_subject.getStudentList()
         group_image = grp.getGroupImage()
         extracted_faces = Extractor.cropFaces(group_image)
         self.saveImages(extracted_faces,self.subject_code,EXTRACTED_IMAGES_SAVE_FOLDER)
 
-        # *****************************
-        # Encode using the FACENET
-
-
-        # for testing************
-        #
-        # self.student_list.append(Student(1,"syam",cv2.imread('../students_images/syam.jpg')))
-        # self.student_list.append(Student(2,"sheldon",cv2.imread('../students_images/sheldon.jpg')))
-        # self.student_list.append(Student(3,"babita",cv2.imread('../students_images/babita.jpg')))
-        # self.student_list.append(Student(4,"gita",cv2.imread('../students_images/gita.jpg')))
-        # self.student_list.append(Student(5,"ram",cv2.imread('../students_images/ram.jpg')))
-
-        #*****************************
         for student in self.student_list:
             self.student_images.append(student.getImage())
-
         embedder = FaceNet()
         self.student_images = np.array(self.student_images)
         extracted_faces = np.array(extracted_faces)
@@ -66,6 +52,7 @@ class FaceMatcher:
 
         am = AttendanceMarker()
         success = am.mark_present(self.present_students,self.subject_code)
+        print(success)
         return success
 
     def get_best_match_student(self, extractedVec):

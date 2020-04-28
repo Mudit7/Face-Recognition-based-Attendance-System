@@ -18,3 +18,7 @@ Will store the extracted information and faces in /static folder in orde to use 
 NOTE:: In /static name of files has been automated i.e you can upload image with any name it will be saved automatically to the corresponding roll number on card.
 4. app.sql is a Database, currently it has only Students Table and Database name is Attendences. Please add Table corresponding to each course.
 
+## For testing 
+1. Use prazwal.jpg for registration
+2. Use unmarked_class.jpg for Attendence
+Both files are under Data folder

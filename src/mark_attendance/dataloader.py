@@ -2,39 +2,64 @@ from src.entities.student import Student
 from src.entities.subject import Subject
 import cv2
 from root_config import ROOT_DIR
+import os, json
+import mysql.connector
+
 #this is temporary dataloader just created for testing.
+def getDatabaseConnection():
+    db_connection = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="",
+        database="Attendences"
+    )
+    return db_connection, db_connection.cursor()
+
 class DataLoader:
-    # mysub=None
-    # s_babita=None
-    # s_sheldon=None
-    # s_ram=None
+ 
     def __init__(self):
         #creating sudents.
-        loc_dir=ROOT_DIR+'/students_images/'
-        self.s_babita=Student(1,
-                              'babita',
-                              cv2.imread(loc_dir+'babita.jpg'))
+        self.allStudents = []
+        loc_dir=ROOT_DIR+'/static/'
+        for filename in os.listdir(loc_dir + 'json'):
+            if filename.endswith(".json"): 
+                f = open(loc_dir + 'json/' + filename)
+                data = json.load(f)
+                name = data['name'] 
+                t_name = 's_' + name.lower()
+                self.allStudents.append(t_name)
+            else:
+                continue
 
-        self.s_sheldon=Student(2,
-                               'sheldon',
-                               cv2.imread(loc_dir+'sheldon.jpg'))
+        i = 0
+        for filename in os.listdir(loc_dir + 'json'):
+            if filename.endswith(".json"): 
+                f = open(loc_dir + 'json/' + filename)
+                data = json.load(f)
+                name = data['name'] 
+                t_name = 's_' + name.lower() 
+                self.allStudents[i] = Student(data['roll_no'],name, 
+                  cv2.imread(loc_dir+'faces/'+data['roll_no'] + '.jpg'))
+                i = i + 1
+            else:
+                continue
+        # print(self.allStudents)
 
-        self.s_ram=Student(3,
-                           'ram',
-                           cv2.imread(loc_dir+'ram.jpg'))
-        #now we will make he list.
-        self.s_gita=Student(4,
-                            'gita',
-                            cv2.imread(loc_dir+'gita.jpg'))
-        self.s_syam=Student(5,
-                            'syam',
-                            cv2.imread(loc_dir+'syam.jpg'))
-        self.s_peter=Student(6,
-                             'peter',
-                             cv2.imread(loc_dir+'peter.jpg'))
-        l1=[self.s_babita,self.s_sheldon,self.s_ram]
-        l2=[self.s_babita,self.s_sheldon,self.s_ram,self.s_gita,self.s_syam]
-        self.mysub=[Subject(101,'algorithms',l2),Subject(102,'toc',l1),Subject(103,'os',l1),Subject(104,'DMA',l2)]
+        self.mysub = []
+        lists=[]
+        db_connection, cursor = getDatabaseConnection() 
+        cursor.execute("select distinct class_id,class_name from classes")
+        myresult = cursor.fetchall()
+        for x in myresult:
+          print(x[0])
+          l = []
+          cursor.execute("select * from classes where class_id =" + str(x[0]))
+          myresult1 = cursor.fetchall()
+          for y in myresult1:
+            for student in self.allStudents:
+              if y[2] == student.studentRollNo: 
+                l.append(student)
+                self.mysub.append(Subject(int(x[0]),x[1],l))
 
     def getSubject(self,subCode):
         for i in self.mysub:

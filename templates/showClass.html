@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Displaying Images</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
+<script>var rn = {{id}}</script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
+
+<script>
+
+    $(function() {
+    var attendence = [];
+    $.getJSON('/static/finalJson/' + {{id}} +'.json', function(data) {
+       console.log(data.attendence)
+       $.each(data.attendence, function(i, f) {
+          var tblRow = "<tr>" + "<td>" + f.name + "</td>" +
+           "<td>" + f.roll_no + "</td>" + "<td>" + f.class + "</td>" +"<td>" + f.attend + "</td>" + "</tr>"
+           $(tblRow).appendTo("#userdata tbody");
+       });
+
+     });
+  });
+</script>
+</head>
+<body>
+<h1 style = "text-align:center;color: #0e055d">
+Class: {{classs}} ({{id}})
+</h1>
+<p>
+  Class Image <br>
+  <img src= "/static/Class_photo/{{id}}" 
+       width="400" 
+       height="235" 
+       alt="Studetn ID card Image"> 
+</p><br>
+<p id = "face" style="color:#FF0000">
+Students Images present in class <br>
+
+<p class="faces"></p>
+<script>
+
+    var dir = "static/extracted_faces_from_class/" + {{id}} + "/img"
+    var i;
+
+    for (i = 0; i < {{Faces}}; i++){
+        var src = "../static/extracted_faces_from_class/" + {{id}} + "/img" + (i+1) + ".jpg";
+        var img = document.createElement('IMG'); 
+        img.setAttribute("src", src);
+        console.log(img)
+        document.body.appendChild(img);
+      }
+
+</script>
+
+</p><br>
+<div class="wrapper">
+<div class="profile">
+  Attendence <br>
+   <table id= "userdata" border="2">
+  <thead>
+            <th>Name</th>
+            <th>Roll No</th>
+            <th>Class</th>
+            <th>Attendence</th>
+        </thead>
+      <tbody>
+
+       </tbody>
+   </table>
+
+</div>
+</div>
+<center><br><br>
+<button type="button" onclick="window.location.href='{{ url_for( 'index') }}';">Home</button>
+</body>
+
+</html>
