@@ -21,4 +21,4 @@ tensorflow==1.13.1
 tensorflow-estimator==1.13.0
 termcolor==1.1.0
 wcwidth==0.1.7
-Werkzeug==0.15.4
+Werkzeug==0.15.5
